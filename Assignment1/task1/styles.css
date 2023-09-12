@@ -1,0 +1,42 @@
+
+/* Reset some default browser styles */
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1em 0;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.personal-info, .intro {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 3%;
+}
+
+/* Media query for responsiveness */
+@media screen and (max-width: 600px) {
+    main {
+        padding: 10px;
+    }
+    .personal-info, .bio {
+        padding: 10px;
+    }
+}
