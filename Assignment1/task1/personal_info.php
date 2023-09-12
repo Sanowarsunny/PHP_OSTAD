@@ -28,7 +28,7 @@ $intro = "I am a web developer with a passion for creating dynamic and responsiv
             </div>
         </section>
         <section class="intro">
-            <h2>About Me</h2><br>
+            <h2>ABOUT ME</h2><br>
             <p><?php echo strtoupper($intro); ?></p>
         </section>
     </main>
