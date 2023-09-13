@@ -53,3 +53,12 @@ input[type="submit"] {
     border: 1px solid #3c763d;
     border-radius: 5px;
 }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .circle-nav li {
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+    }
+}
