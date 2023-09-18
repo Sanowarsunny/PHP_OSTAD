@@ -5,25 +5,25 @@ Create a PHP script that prints numbers from 1 to 50 using a for loop. However, 
 loop encounters a multiple of 5, it should skip that number using the continue statement and
 continue to the next iteration.
 */
-function skip_mul_5($start, $stop){
-
-    for ($i = $start; $i <= $stop; $i++) {
-    
-        if ($i % 5 == 0) {
-            // Skip multiples of 5
-            continue; // Skip the current iteration and move to the next one
-        }
-        echo $i."\t";
+for ($i = 1; $i <= 50; $i++) {
+    if ($i % 5 == 0) {
+        continue; 
     }
+    echo $i . " ";
 }
 
-skip_mul_5(1,50);
+// function skip_mul_5($start, $stop){
 
-// for ($i = 1; $i <= 50; $i++) {
-//     if ($i % 5 == 0) {
-//         continue; 
+//     for ($i = $start; $i <= $stop; $i++) {
+    
+//         if ($i % 5 == 0) {
+//             // Skip multiples of 5
+//             continue; // Skip the current iteration and move to the next one
+//         }
+//         echo $i."\t";
 //     }
-//     echo $i . " ";
 // }
+
+// skip_mul_5(1,50);
 
 ?>

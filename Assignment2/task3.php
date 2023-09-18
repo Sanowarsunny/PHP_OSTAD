@@ -6,27 +6,47 @@ Fibonacci number is greater than 100, break out of the loop using the break stat
 */
 // 0 1 1 2 3 5 8
 
-function fibonacci_Break($count) {
-    $num1 = 0;
-    $num2 = 1;
-    
-    for ($i = 1; $i <= $count; $i++) {
-        $res = $num1;
-        echo $res . " ";
+$first = 0;
+$second = 1;
+$count = 0;
 
-        $next = $num1 + $num2;
+while ($count < 10) {
+    $fibonacci = $first;
+    echo $fibonacci . " ";
 
-        if ($next > 100) {
-            break; // Break the loop if the next Fibonacci number is greater than 100
-        }
+    $first = $second;
+    $second = $fibonacci + $second;
 
-        $num1 = $num2;
-        $num2 = $next;
+    $count++;
+
+    if ($fibonacci > 100) {
+        break; // Break the loop if Fibonacci number is greater than 100
     }
 }
 
-// Call the function to print the first 10 Fibonacci numbers or break if > 100
-fibonacci_Break(24);
+
+
+// function fibonacci_Break($count) {
+//     $num1 = 0;
+//     $num2 = 1;
+    
+//     for ($i = 1; $i <= $count; $i++) {
+//         $res = $num1;
+//         echo $res . " ";
+
+//         $next = $num1 + $num2;
+
+//         if ($next > 100) {
+//             break; // Break the loop if the next Fibonacci number is greater than 100
+//         }
+
+//         $num1 = $num2;
+//         $num2 = $next;
+//     }
+// }
+
+// // Call the function to print the first 10 Fibonacci numbers or break if > 100
+// fibonacci_Break(24);
 
 
 ?>
