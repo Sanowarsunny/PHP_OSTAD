@@ -6,7 +6,7 @@ loop encounters a multiple of 5, it should skip that number using the continue s
 continue to the next iteration.
 */
 function skip_mul_5($start, $stop){
-    
+
     for ($i = $start; $i <= $stop; $i++) {
     
         if ($i % 5 == 0) {
@@ -17,7 +17,7 @@ function skip_mul_5($start, $stop){
     }
 }
 
-skip_mul_5(1,40);
+skip_mul_5(1,50);
 
 // for ($i = 1; $i <= 50; $i++) {
 //     if ($i % 5 == 0) {
