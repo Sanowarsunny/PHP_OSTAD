@@ -15,7 +15,7 @@ class Product {
 
     // TODO: Add getFormattedPrice method
     public function getFormattedPrice(){
-        return "$".round($this->price, 2);
+        return "$".number_format($this->price, 2);
     }
 
     // TODO: Add showDetails method
