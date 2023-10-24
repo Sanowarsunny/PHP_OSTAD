@@ -2,22 +2,23 @@
 
 session_start();
 
-$email = $_POST["email"] ?? "";
+$email = $_POST["email"] ?? "";// catch form value using post method
 $password = $_POST["password"] ?? "";
 
-$err_Message = "Role is not Match";
 
-$fp = fopen("./database.txt","r");
+//$err_Message = "Role is not Match";
 
-$roles = array();
+$fp = fopen("./database.txt","r");// file open
+
+$roles = array(); // take file value inside the array
 $emails = array();
 $passwords = array();
 $first_Names = array();
 $last_Names = array();
 
-
+//use while loop for on file value read and push this value inside those array variable
 while($line = fgets($fp)){
-    $val = explode(",", $line);
+    $val = explode(",", $line);// use explode for comma separator
 
     array_push($roles, trim($val[0]));
     array_push($emails, trim($val[1]));
@@ -31,9 +32,10 @@ while($line = fgets($fp)){
 
 fclose($fp);
 
-
+//iterate untill how many roles and match(email and pass),
+//then store array value in session variable
 for($i=0; $i<count($roles); $i++){
-    if ($roles[$i] == "user") {
+
         if ($email == $emails[$i] && $password == $passwords[$i]) {
 
             $_SESSION["role"] = $roles[$i];
@@ -42,12 +44,9 @@ for($i=0; $i<count($roles); $i++){
             $_SESSION["last_Name"] = $last_Names[$i];
 
 
-            header("Location: index.php");
+            header("Location: index.php");//redirect to this page
         }
-    } else {
-         $err_Message;
-    }
-}
+      }
 ?>
 
 
@@ -89,19 +88,17 @@ for($i=0; $i<count($roles); $i++){
 
               <!-- <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p> -->
 
-              <!-- <p>
-                <?php
-                echo $err_Message;
-                ?>
-              </p> -->
-              <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+              <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button><br><br><br>
 
 
-            </div>
+              <button class="btn btn-outline-light btn-lg px-5" type="submit"><a href="sign.php" style="text-decoration:none;">Sign Up</a></button><br>
 
-            <div>
-              <p class="mb-0">Don't have an account? <a href="sign.php" class="text-white-50 fw-bold">Sign Up</a>
-              </p>
+               <br>
+               </form>
+
+              <!-- <a href="sign.php" >Sign Up</a> -->
+              
+
             </div>
 
           </div>
@@ -109,9 +106,8 @@ for($i=0; $i<count($roles); $i++){
       </div>
     </div>
   </div>
-</form>
-    </section>
-</form>
+ </section>
+
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 

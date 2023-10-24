@@ -1,2 +1,0 @@
-admin, sanowar@gmail.com, 1234, summy, hossain
-user, sano@gmail.com, 1224, sakin, hossain

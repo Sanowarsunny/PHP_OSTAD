@@ -1,11 +1,13 @@
 <?php
-
-
 session_start();
 
-if(!isset($_SESSION["email"])){
+// check role is set by session or role value is user
+if(!isset($_SESSION["role"]) || $_SESSION["role"] !='user'){ 
     header("Location: login.php");
-};
+    
+}
+
+
 ?>
 
 
@@ -14,7 +16,7 @@ if(!isset($_SESSION["email"])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User Page</title>
 </head>
 <body>
     welcome <?php echo $_SESSION["first_Name"];?>
