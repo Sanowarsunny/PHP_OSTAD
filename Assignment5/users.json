@@ -1,0 +1,33 @@
+{
+    "sanowarhossain3843@gmail.com": {
+        "firstname": "sunny",
+        "lastname": "Hossain",
+        "password": "3333",
+        "role": "admin"
+    },
+    "duo@gmail.com": {
+        "firstname": "hello 4",
+        "lastname": "duo",
+        "password": "222",
+        "role": "user",
+        "email": "hello 4"
+    },
+    "sani@gmail.com": {
+        "firstname": "sani",
+        "lastname": "sani",
+        "password": "zxc",
+        "role": "user"
+    },
+    "sano@gmail.com": {
+        "firstname": "asd",
+        "lastname": "dsf",
+        "password": "asd",
+        "role": "user"
+    },
+    "ari@gmail.com": {
+        "firstname": "pain",
+        "lastname": "man",
+        "password": "345",
+        "role": "user"
+    }
+}

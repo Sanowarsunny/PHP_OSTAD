@@ -1,115 +1,89 @@
 <?php
-
 session_start();
 
-$email = $_POST["email"] ?? "";// catch form value using post method
-$password = $_POST["password"] ?? "";
-
-
-//$err_Message = "Role is not Match";
-
-$fp = fopen("./database.txt","r");// file open
-
-$roles = array(); // take file value inside the array
-$emails = array();
-$passwords = array();
-$first_Names = array();
-$last_Names = array();
-
-//use while loop for on file value read and push this value inside those array variable
-while($line = fgets($fp)){
-    $val = explode(",", $line);// use explode for comma separator
-
-    array_push($roles, trim($val[0]));
-    array_push($emails, trim($val[1]));
-    array_push($passwords, trim($val[2]));
-    array_push($first_Names, trim($val[3]));
-    array_push($last_Names, trim($val[4]));
-
+// Check if the user is already logged in
+if (isset($_SESSION['email'])) {
+    header("Location: index.php");
+    exit();
 }
 
-// echo $emails[1];
+// Check if the form is submitted
+if (isset($_POST['email']) && isset($_POST['password'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-fclose($fp);
+    // Load the JSON data
+    $users = json_decode(file_get_contents('users.json'), true);
 
-//iterate untill how many roles and match(email and pass),
-//then store array value in session variable
-for($i=0; $i<count($roles); $i++){
-
-        if ($email == $emails[$i] && $password == $passwords[$i]) {
-
-            $_SESSION["role"] = $roles[$i];
-            $_SESSION["email"] = $emails[$i];
-            $_SESSION["first_Name"] = $first_Names[$i];
-            $_SESSION["last_Name"] = $last_Names[$i];
-
-
-            header("Location: index.php");//redirect to this page
-        }
-      }
+    if (isset($users[$email]) && $users[$email]['password'] === $password) {
+        // Set session variables
+        $_SESSION['email'] = $email;
+        $_SESSION['firstname'] = $users[$email]['firstname'];
+        $_SESSION['lastname'] = $users[$email]['lastname'];
+        $_SESSION['role'] = $users[$email]['role'];
+        header("Location: index.php");
+        exit();
+    } else {
+        $error_message = "Invalid email or password.";
+    }
+}
 ?>
 
-
-
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <title>Login Page</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Add custom CSS for styling -->
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
+
 <body>
-<form action="login.php" method="POST">
-    <section class="vh-100 gradient-custom">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-        <div class="card bg-dark text-white" style="border-radius: 1rem;">
-          <div class="card-body p-5 text-center">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="login-container">
+                    <h2 class="text-center mb-4">Login</h2>
+                    <form action="login.php" method="POST">
+                        <span class="error" style="color: #FF0001;">
+                            <?php if (isset($error_message)) {
+                                echo $error_message;
+                            } ?>
+                        </span>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="Enter your password">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    </form>
 
-            <div class="mb-md-5 mt-md-4 pb-5">
-
-              <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
-              <p class="text-white-50 mb-5">Please enter your login and password!</p>
-
-              <div class="form-outline form-white mb-4">
-                <input type="email" id="typeEmailX" name="email" class="form-control form-control-lg" />
-                <label class="form-label" for="typeEmailX" >Email</label>
-              </div>
-
-              <div class="form-outline form-white mb-4">
-                <input type="password" id="typePasswordX" name="password" class="form-control form-control-lg" />
-                <label class="form-label" for="typePasswordX">Password</label>
-              </div>
-
-              <!-- <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p> -->
-
-              <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button><br><br><br>
-
-
-              <button class="btn btn-outline-light btn-lg px-5" type="submit"><a href="sign.php" style="text-decoration:none;">Sign Up</a></button><br>
-
-               <br>
-               </form>
-
-              <!-- <a href="sign.php" >Sign Up</a> -->
-              
-
+                    <p class="text-center mt-3">Don't have an account? <a href="sign.php">Sign Up</a></p>
+                </div>
             </div>
-
-          </div>
         </div>
-      </div>
     </div>
-  </div>
- </section>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
-
+    <!-- Add Bootstrap JS and Popper.js scripts for Bootstrap to work -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
+
 </html>

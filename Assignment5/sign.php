@@ -1,56 +1,52 @@
 <?php
-// define variables to empty values  
-$firstNameErr = $emailErr = $passErr = "";
-$firstName = $email = $password = $lastName = "";
 
-//Input fields validation  
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$usersFile = 'users.json';
 
-    $lastName = input_data($_POST["lastName"]);
+$users = file_exists( $usersFile ) ? json_decode( file_get_contents($usersFile), true) : [];
 
-    //String Validation  
-    if (empty($_POST["firstName"])) {
-        $nameErr = "Name is required";
-    } else {
-        $firstName = input_data($_POST["firstName"]);
-        // check if name only contains letters and whitespace  
-        if (!preg_match("/^[a-zA-Z ]*$/", $firstName)) {
-            $nameErr = "Only alphabets and white space are allowed";
+
+$errMess = "";
+
+function saveUser($users, $file){
+    file_put_contents($file, json_encode($users,JSON_PRETTY_PRINT));
+}
+
+if (isset($_POST["submit"])) {
+
+    $firstName = $_POST["firstname"];
+    $lastName = $_POST["lastname"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+
+    if ($password != $_POST["confirmpassword"]) {
+        $errMess = "Password is not match.";
+    }
+    elseif (empty($firstName) || empty($lastName) || empty($email)) {
+        $errMess = "Please fill all information";
+    } 
+    else {
+        if (isset($users[$email])) {
+            $errMess="Email already exists";
+        }else {
+            $users[$email] = [
+                "firstname"=> $firstName,
+                "lastname"=> $lastName,
+                "password"=> $password,
+                "role"=>"user"    
+            ];
+            saveUser($users, $usersFile);//add users and file
+            header("Location:login.php");
         }
     }
 
-    //Email Validation   
-    if (empty($_POST["email"])) {
-        $emailErr = "Email is required";
-    } else {
-        $email = input_data($_POST["email"]);
-        // check that the e-mail address is well-formed  
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $emailErr = "Invalid email format";
-        }
-    }
-
-    //password check
-
-    if ($_POST["password"] != $_POST["confirmpass"]) {
-        $passErr = "Password is not match.";
-    } else {
-        $password = input_data($_POST["password"]);
-    }
-
-
-
 }
-function input_data($data)
-{
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
-
-
 ?>
+
+
+
+
+
+
 
 <!DOCTYPE html>
 <html>
@@ -62,74 +58,52 @@ function input_data($data)
 </head>
 
 <body>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">Sign Up</div>
-                        <div class="card-body">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Sign Up</div>
+                    <div class="card-body">
+                        <form action="sign.php" method="POST">
                             <span>
                                 <?php
-                                if (isset($_POST['submit'])) {
-                                    if ($firstNameErr == "" && $emailErr == "" && $passErr == "") {
-                                        $fp = fopen("./database.txt", "apend"); // file open
-                                        fwrite($fp, "\n user,{$firstName},{$lastName},{$email},{$password}");
-                                        fclose($fp);
-
-                                        //header("Location: login.php");
-                                        echo "Sign Up Successfully and press Back button!!!";
-                                    }
-                                }
+                                echo $errMess;
                                 ?>
                             </span>
-                            <div class="form-group">
-                                <label for="name">First Name</label>
-                                <input type="text" class="form-control" name="firstName" placeholder="Enter First Name">
-                                <span class="error" style="color: #FF0001;">*
-                                    <?php echo $firstNameErr; ?>
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label for="name">Last Name</label>
-                                <input type="text" class="form-control" name="lastName" placeholder="Enter Last Name">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="first-name">First Name</label>
+                                        <input type="text" class="form-control" name="firstname"
+                                            placeholder="First Name">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="last-name">Last Name</label>
+                                        <input type="text" class="form-control" name="lastname" placeholder="Last Name">
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" name="email" placeholder="Enter Email">
-                                <span class="error" style="color: #FF0001;">*
-                                    <?php echo $emailErr; ?>
-                                </span>
+                                <input type="email" class="form-control" name="email" placeholder="Email">
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <input type="password" class="form-control" name="password"
-                                    placeholder="Enter Password">
+                                <input type="password" class="form-control" name="password" placeholder="Password">
                             </div>
                             <div class="form-group">
                                 <label for="confirm-password">Confirm Password</label>
-                                <input type="password" class="form-control" name="confirmpass"
+                                <input type="password" class="form-control" name="confirmpassword"
                                     placeholder="Confirm Password">
-                                <span class="error" style="color: #FF0001;">*
-                                    <?php echo $passErr; ?>
-                                </span>
-
                             </div>
-                            <button type="submit" class="btn btn-primary" name="submit">Sign Up</button>
-                            <button class="btn btn-primary float-right" type="submit"><a href="login.php"
-                                    style="text-decoration:none; color:white">Back</a></button><br>
-
-                        </div>
+                            <button type="submit" class="btn btn-primary" name="submit" value="submit">Sign Up</button>
+                        </form>
                     </div>
+                    <p style="padding-left:20%">Already have an account? <a href="login.php"
+                            class="btn btn-link">Login</a></p>
+
                 </div>
             </div>
         </div>
-    </form>
-    <!-- Add the Bootstrap JS and Popper.js scripts for Bootstrap to work -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</body>
-
-</html>
