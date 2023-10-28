@@ -27,11 +27,11 @@ if (isset($_POST['delete'])) {
 
 if (isset($_POST['add_user'])) {
     // Handle adding a new user
-    $newUserEmail = $_POST['new_user_email'];
-    $newUserFirstName = $_POST['new_user_firstname'];
-    $newUserLastName = $_POST['new_user_lastname'];
-    $newUserPassword = $_POST['new_user_password'];
-    $newUserRole = $_POST['new_user_role'];
+    $newUserEmail = $_POST['email'];
+    $newUserFirstName = $_POST['firstname'];
+    $newUserLastName = $_POST['lastname'];
+    $newUserPassword = md5($_POST['password']);
+    $newUserRole = $_POST['role'];
 
     if (!empty($newUserEmail) && !empty($newUserFirstName) && !empty($newUserLastName) && !empty($newUserPassword) && !empty($newUserRole)) {
         $users[$newUserEmail] = [
@@ -82,19 +82,19 @@ setcookie('admin_name', $adminName, time() + 30, '/');
         <form method="POST">
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <input type="text" class="form-control" name="new_user_email" placeholder="Email">
+                    <input type="text" class="form-control" name="email" placeholder="Email">
                 </div>
                 <div class="form-group col-md-2">
-                    <input type="text" class="form-control" name="new_user_firstname" placeholder="First Name">
+                    <input type="text" class="form-control" name="firstname" placeholder="First Name">
                 </div>
                 <div class="form-group col-md-2">
-                    <input type="text" class="form-control" name="new_user_lastname" placeholder="Last Name">
+                    <input type="text" class="form-control" name="lastname" placeholder="Last Name">
                 </div>
                 <div class="form-group col-md-2">
-                    <input type="password" class="form-control" name="new_user_password" placeholder="Password">
+                    <input type="password" class="form-control" name="password" placeholder="Password">
                 </div>
                 <div class="form-group col-md-2">
-                    <input type="text" class="form-control" name="new_user_role" placeholder="Role">
+                    <input type="text" class="form-control" name="role" placeholder="Role">
                 </div>
             </div>
             <button type="submit" name="add_user" class="btn btn-success">Add User</button>

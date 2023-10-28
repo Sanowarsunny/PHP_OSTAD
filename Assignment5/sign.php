@@ -16,9 +16,9 @@ if (isset($_POST["submit"])) {
     $firstName = $_POST["firstname"];
     $lastName = $_POST["lastname"];
     $email = $_POST["email"];
-    $password = $_POST["password"];
+    $password = md5($_POST["password"]);
 
-    if ($password != $_POST["confirmpassword"]) {
+    if ($password != md5($_POST["confirmpassword"])) {
         $errMess = "Password is not match.";
     }
     elseif (empty($firstName) || empty($lastName) || empty($email)) {

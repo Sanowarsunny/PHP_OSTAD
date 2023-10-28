@@ -10,7 +10,7 @@ if (isset($_SESSION['email'])) {
 // Check if the form is submitted
 if (isset($_POST['email']) && isset($_POST['password'])) {
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    $password = md5($_POST['password']);
 
     // Load the JSON data
     $users = json_decode(file_get_contents('users.json'), true);
@@ -70,6 +70,10 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                             <label for="password">Password</label>
                             <input type="password" class="form-control" id="password" name="password"
                                 placeholder="Enter your password">
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
+                            <label class="form-check-label" for="remember_me">Remember Me</label>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </form>
