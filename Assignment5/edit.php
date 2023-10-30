@@ -7,7 +7,7 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'admin') {
 }
 
 if (isset($_GET['email'])) {
-    $editEmail = $_GET['email'];
+    $editEmail = base64_decode($_GET['email']);
 
     // Load the JSON data
     $users = json_decode(file_get_contents('users.json'), true);

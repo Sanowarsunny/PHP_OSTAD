@@ -10,9 +10,10 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'admin') {
 $users = json_decode(file_get_contents('users.json'), true);
 
 if (isset($_POST['edit'])) {
-    // Handle edit request, redirect to edit page
+
     $editEmail = $_POST['edit'];
-    header("Location: edit.php?email=$editEmail");
+    $encode = base64_encode($editEmail);
+    header("Location: edit.php?email=$encode");
     exit();
 }
 
@@ -50,7 +51,7 @@ if (isset($_POST['logout'])) {
 }
 
 // Set a cookie with the user's name
-$adminName = $_SESSION['firstname'] . ' ' . $_SESSION['lastname'];
+$adminName = base64_encode($_SESSION['firstname']) . ' ' . base64_encode($_SESSION['lastname']);
 setcookie('admin_name', $adminName, time() + 30, '/');
 
 

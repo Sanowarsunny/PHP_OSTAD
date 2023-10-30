@@ -21,11 +21,24 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $_SESSION['firstname'] = $users[$email]['firstname'];
         $_SESSION['lastname'] = $users[$email]['lastname'];
         $_SESSION['role'] = $users[$email]['role'];
+
+        // Check if the "Remember Me" checkbox is checked
+        if (isset($_POST['remember_me'])) {
+            // Set a cookie for remembering the user's email
+            $rememberEmail = base64_encode($email);
+            setcookie('remember_email', $rememberEmail, time() + 10, '/'); // Expires in 30 seconds
+        }
+
         header("Location: index.php");
         exit();
     } else {
         $error_message = "Invalid email or password.";
     }
+}
+
+// Check if a "Remember Me" cookie exists and auto-fill the email field
+if (isset($_COOKIE['remember_email'])) {
+    $rememberedEmail = base64_decode($_COOKIE['remember_email']);
 }
 ?>
 
@@ -64,7 +77,8 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="email"
-                                placeholder="Enter your email">
+                                placeholder="Enter your email"
+                                value="<?php echo isset($rememberedEmail) ? $rememberedEmail : ''; ?>">
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>

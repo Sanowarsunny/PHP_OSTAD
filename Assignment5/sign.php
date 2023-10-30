@@ -2,13 +2,14 @@
 
 $usersFile = 'users.json';
 
-$users = file_exists( $usersFile ) ? json_decode( file_get_contents($usersFile), true) : [];
+$users = file_exists($usersFile) ? json_decode(file_get_contents($usersFile), true) : [];
 
 
 $errMess = "";
 
-function saveUser($users, $file){
-    file_put_contents($file, json_encode($users,JSON_PRETTY_PRINT));
+function saveUser($users, $file)
+{
+    file_put_contents($file, json_encode($users, JSON_PRETTY_PRINT));
 }
 
 if (isset($_POST["submit"])) {
@@ -20,21 +21,19 @@ if (isset($_POST["submit"])) {
 
     if ($password != md5($_POST["confirmpassword"])) {
         $errMess = "Password is not match.";
-    }
-    elseif (empty($firstName) || empty($lastName) || empty($email)) {
+    } elseif (empty($firstName) || empty($lastName) || empty($email)) {
         $errMess = "Please fill all information";
-    } 
-    else {
+    } else {
         if (isset($users[$email])) {
-            $errMess="Email already exists";
-        }else {
+            $errMess = "Email already exists";
+        } else {
             $users[$email] = [
-                "firstname"=> $firstName,
-                "lastname"=> $lastName,
-                "password"=> $password,
-                "role"=>"user"    
+                "firstname" => $firstName,
+                "lastname" => $lastName,
+                "password" => $password,
+                "role" => "user"
             ];
-            saveUser($users, $usersFile);//add users and file
+            saveUser($users, $usersFile); //add users and file
             header("Location:login.php");
         }
     }
