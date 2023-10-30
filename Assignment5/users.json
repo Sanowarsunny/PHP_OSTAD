@@ -10,5 +10,11 @@
         "lastname": "khurshed",
         "password": "81dc9bdb52d04dc20036dbd8313ed055",
         "role": "user"
+    },
+    "ari@gmail.com": {
+        "firstname": "KJSJK",
+        "lastname": "JAS",
+        "password": "289dff07669d7a23de0ef88d2f7129e7",
+        "role": "user"
     }
 }
