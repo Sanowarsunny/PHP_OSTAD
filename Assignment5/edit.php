@@ -27,7 +27,7 @@ if (isset($_POST['update'])) {
     // Handle edit form submission
     $editFirstName = $_POST['firstname'];
     $editLastName = $_POST['lastname'];
-    $editRole = $_POST['role'];
+    $editRole = strtolower($_POST['role']);;
 
     $users[$editEmail]['firstname'] = $editFirstName;
     $users[$editEmail]['lastname'] = $editLastName;

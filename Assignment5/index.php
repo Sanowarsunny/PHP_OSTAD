@@ -14,5 +14,9 @@ elseif($_SESSION['role']=='admin' ){
     header("Location: admin.php");
 
 }
+elseif($_SESSION['role']=='manager' ){
+    header("Location: manager.php");
+
+}
 
 ?>

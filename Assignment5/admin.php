@@ -10,7 +10,6 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'admin') {
 $users = json_decode(file_get_contents('users.json'), true);
 
 if (isset($_POST['edit'])) {
-
     $editEmail = $_POST['edit'];
     $encode = base64_encode($editEmail);
     header("Location: edit.php?email=$encode");
@@ -32,18 +31,24 @@ if (isset($_POST['add_user'])) {
     $newUserFirstName = $_POST['firstname'];
     $newUserLastName = $_POST['lastname'];
     $newUserPassword = md5($_POST['password']);
-    $newUserRole = $_POST['role'];
+    $newUserRole = strtolower($_POST['role']); // Convert role to lowercase
 
-    if (!empty($newUserEmail) && !empty($newUserFirstName) && !empty($newUserLastName) && !empty($newUserPassword) && !empty($newUserRole)) {
-        $users[$newUserEmail] = [
-            'firstname' => $newUserFirstName,
-            'lastname' => $newUserLastName,
-            'password' => $newUserPassword,
-            'role' => $newUserRole,
-        ];
-        file_put_contents('users.json', json_encode($users, JSON_PRETTY_PRINT));
+    // Check if the email already exists
+    if (isset($users[$newUserEmail])) {
+        $error_message = "Email already exists. Please choose a different email.";
+    } else {
+        if (!empty($newUserEmail) && !empty($newUserFirstName) && !empty($newUserLastName) && !empty($newUserPassword) && !empty($newUserRole)) {
+            $users[$newUserEmail] = [
+                'firstname' => $newUserFirstName,
+                'lastname' => $newUserLastName,
+                'password' => $newUserPassword,
+                'role' => $newUserRole,
+            ];
+            file_put_contents('users.json', json_encode($users, JSON_PRETTY_PRINT));
+        }
     }
 }
+
 
 if (isset($_POST['logout'])) {
     header("Location: logout.php");
@@ -53,8 +58,6 @@ if (isset($_POST['logout'])) {
 // Set a cookie with the user's name
 $adminName = base64_encode($_SESSION['firstname']) . ' ' . base64_encode($_SESSION['lastname']);
 setcookie('admin_name', $adminName, time() + 30, '/');
-
-
 
 ?>
 
@@ -100,7 +103,11 @@ setcookie('admin_name', $adminName, time() + 30, '/');
             </div>
             <button type="submit" name="add_user" class="btn btn-success">Add User</button>
         </form>
-        
+        <span class="error" style="color: #FF0001;">
+            <?php if (isset($error_message)) {
+                echo $error_message;
+            } ?>
+        </span>
         <table class="table mt-4">
             <thead>
                 <tr>
