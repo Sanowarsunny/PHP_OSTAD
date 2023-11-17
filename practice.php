@@ -30,4 +30,6 @@ for ($i = 0; $i < strlen($text); $i++) {
 }
 echo "Decrp: ".$decryp;
 
+
+
 ?>
